@@ -6,34 +6,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nexentra/inteligpt/pkg/auth"
-	"github.com/nexentra/inteligpt/pkg/comments"
 	"github.com/nexentra/inteligpt/pkg/common/db"
-	finetune "github.com/nexentra/inteligpt/pkg/fine-tune"
+	finetune "github.com/nexentra/inteligpt/pkg/open-ai/fine-tune"
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title           CloudNua: Comment Service
-// @version         1.0
-// @description     This is a simple CRUD HTTP service.
-// @termsOfService  http://swagger.io/terms/
-
-// @contact.name   CloudNua API Support
-// @contact.url    http://www.swagger.io/support
-// @contact.email  support@cloudnua.io
-
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host      localhost:8080
-// @BasePath  /v1/comment
-
-// @securityDefinitions.basic  BasicAuth
-
-// Run - is going to be responsible for
-// the instantiation and startup of the
-// go application
 func Run() error {
 	fmt.Println("starting up api service")
 
@@ -68,7 +47,6 @@ func setupRouter() *gin.Engine {
 	r := gin.Default()
 	h := db.InitDatabase(dbUrl)
 
-	comments.RegisterRoutes(r, h)
 	auth.RegisterRoutes(r,h)
 	d := r.Group("/dashboard")
 	finetune.RegisterRoutes(d,r,h)

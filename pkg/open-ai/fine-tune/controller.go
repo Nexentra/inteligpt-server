@@ -20,6 +20,7 @@ func RegisterRoutes(dashboard *gin.RouterGroup,router *gin.Engine, db *gorm.DB) 
 	fineTunes.Use(jwt.AuthRequired(),openai.KeyRequired())
 	{
 		fineTunes.POST("upload", h.Uploader)
+		fineTunes.POST("fine-tuner", h.FineTuner)
 	}
 }	
 }

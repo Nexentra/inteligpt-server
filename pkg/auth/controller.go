@@ -16,10 +16,12 @@ func RegisterRoutes(router *gin.Engine, db *gorm.DB) {
 	}
 	auth := router.Group("/auth/")
 	{
-        auth.POST("register", h.RegisterUser)
-        auth.POST("login", h.LoginUser)
+		auth.POST("register", h.RegisterUser)
+		auth.POST("login", h.LoginUser)
 		user := auth.Group("/user/")
 		user.Use(jwt.AuthRequired())
-        user.GET(":id", h.GetUser)
+		{
+			user.GET(":id", h.GetUser)
+		}
 	}
 }
