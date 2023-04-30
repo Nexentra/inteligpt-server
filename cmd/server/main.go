@@ -8,6 +8,7 @@ import (
 	"github.com/nexentra/inteligpt/pkg/auth"
 	"github.com/nexentra/inteligpt/pkg/comments"
 	"github.com/nexentra/inteligpt/pkg/common/db"
+	finetune "github.com/nexentra/inteligpt/pkg/fine-tune"
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -69,10 +70,12 @@ func setupRouter() *gin.Engine {
 
 	comments.RegisterRoutes(r, h)
 	auth.RegisterRoutes(r,h)
+	d := r.Group("/dashboard")
+	finetune.RegisterRoutes(d,r,h)
 
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
-			"message": "CloudNua Comment Service",
+			"message": "Welcome to inteligpt!!",
 		})
 	})
 

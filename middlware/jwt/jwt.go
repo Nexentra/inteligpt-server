@@ -11,7 +11,7 @@ import (
 
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
-        tokenString := c.Request.Header["Authorization"][0]
+        tokenString := c.GetHeader("Authorization")
         if tokenString == "" {
             c.AbortWithStatus(http.StatusUnauthorized)
             return
