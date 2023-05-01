@@ -1,4 +1,4 @@
-package prompt
+package filecontrol
 
 import (
 	"github.com/gin-gonic/gin"
@@ -16,10 +16,13 @@ func RegisterRoutes(dashboard *gin.RouterGroup,router *gin.Engine, db *gorm.DB) 
 		DB: db,
 	}
 {
-	fineTunes := dashboard.Group("/prompt/")
+	fineTunes := dashboard.Group("/files/")
 	fineTunes.Use(jwt.AuthRequired(),openai.KeyRequired())
 	{
-		fineTunes.POST("chat", h.Chat)
+		fineTunes.POST("upload", h.CreateFile)
+		fineTunes.DELETE(":id", h.DeleteFile)
+		fineTunes.GET("", h.GetFiles)
+		fineTunes.GET(":id", h.GetFile)
 	}
 }	
 }

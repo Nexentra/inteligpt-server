@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nexentra/inteligpt/pkg/auth"
 	"github.com/nexentra/inteligpt/pkg/common/db"
+	filecontrol "github.com/nexentra/inteligpt/pkg/open-ai/file-control"
 	finetune "github.com/nexentra/inteligpt/pkg/open-ai/fine-tune"
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
@@ -46,10 +47,11 @@ func setupRouter() *gin.Engine {
 
 	r := gin.Default()
 	h := db.InitDatabase(dbUrl)
+	d := r.Group("/dashboard")
 
 	auth.RegisterRoutes(r,h)
-	d := r.Group("/dashboard")
 	finetune.RegisterRoutes(d,r,h)
+	filecontrol.RegisterRoutes(d,r,h)
 
 	r.GET("/", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{

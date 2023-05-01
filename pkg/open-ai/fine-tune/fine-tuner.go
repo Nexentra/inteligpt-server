@@ -1,7 +1,6 @@
 package finetune
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +9,7 @@ import (
 	openai "github.com/sashabaranov/go-openai"
 )
 
-func (h handler) FineTuner(ctx *gin.Context) {
+func (h handler) CreateFineTune(ctx *gin.Context) {
 	body := openai.FineTuneRequest{}
 
 	if err := ctx.BindJSON(&body); err != nil {
@@ -18,11 +17,33 @@ func (h handler) FineTuner(ctx *gin.Context) {
 		return
 	}
 
-	response, err := settings.Client.Client.CreateFineTune(context.Background(), body)
+	response, err := settings.Client.Client.CreateFineTune(ctx, body)
 	if err != nil {
 		ctx.String(http.StatusBadRequest, "Error creating fine-tune: %s", err.Error())
 		return
 	}
 
 	ctx.JSON(http.StatusCreated, response)
+}
+
+func (h handler) CancelFineTune(ctx *gin.Context) {
+	fineTuneId := ctx.Param("id")
+	res, err := settings.Client.Client.CancelFineTune(ctx, fineTuneId)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, "Error canceling fine-tune: %s", err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, res)
+}
+
+func (h handler) DeleteFineTune(ctx *gin.Context) {
+	fineTuneId := ctx.Param("id")
+	res, err := settings.Client.Client.DeleteFineTune(ctx, fineTuneId)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, "Error deleting fine-tune: %s", err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, res)
 }
