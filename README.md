@@ -1,4 +1,4 @@
-# inteligpt-server
+# InteliGPT
 
 InteliGPT gives OpenAI api a nice GUI on the web. It also gives some additional features such as Voice control on prompts, additional LLMs and many more. This repository is the backend for the application.
 
